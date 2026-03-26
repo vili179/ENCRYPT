@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hide Secret</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0a0e1a;
+            color: #00ff88;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #1e2436;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #00ff88;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            background: #0a0e1a;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background: #00ff88;
+            color: black;
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+        }
+        button:hover {
+            background: #00cc66;
+        }
+        .error {
+            background: #ff4444;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00ff88;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .info {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 HIDE A SECRET</h1>
+        <p style="text-align: center;">Hide your message inside an image</p>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <label>📷 Choose an image:</label>
+            <input type="file" name="image" accept="image/png,image/jpeg,image/jpg,image/bmp" required>
+            
+            <label>💬 Your secret message:</label>
+            <textarea name="secret" placeholder="Enter your secret message here..." required></textarea>
+            
+            <label>🔐 Create a password:</label>
+            <input type="text" name="password" placeholder="e.g., hello123" required>
+            
+            <button type="submit">✨ HIDE & DOWNLOAD ✨</button>
+        </form>
+        
+        {% if error %}
+        <div class="error">❌ {{ error }}</div>
+        {% endif %}
+        
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="info">
+            💡 Your message will be encrypted and hidden in the image pixels.<br>
+            Download the PNG file and share it with anyone who has the password!
+        </div>
+    </div>
+</body>
+</html>

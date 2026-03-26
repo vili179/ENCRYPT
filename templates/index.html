@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Steganography Tool</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: linear-gradient(135deg, #1a1f2a, #0a0e1a);
+            color: #00ff88;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .cards {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: #1e2436;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #00ff88;
+            width: 250px;
+            text-decoration: none;
+            color: #00ff88;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+        }
+        .card p {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        footer {
+            margin-top: 60px;
+            font-size: 0.8em;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 SECRET AGENT TOOL 🔐</h1>
+        <p>Hide secrets in images • Extract hidden messages</p>
+        
+        <div class="cards">
+            <a href="/hide" class="card">
+                <div class="emoji">📸</div>
+                <h2>HIDE</h2>
+                <p>Upload image + secret + password → Get hidden image</p>
+            </a>
+            
+            <a href="/extract" class="card">
+                <div class="emoji">🔓</div>
+                <h2>EXTRACT</h2>
+                <p>Upload hidden image + password → Reveal secret</p>
+            </a>
+        </div>
+        
+        <footer>
+            🔒 LSB Steganography + XOR Encryption
+        </footer>
+    </div>
+</body>
+</html>
