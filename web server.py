@@ -6,7 +6,9 @@ import uuid
 
 # Create Flask app
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB limit
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 # Create uploads folder if it doesn't exist
 os.makedirs('uploads', exist_ok=True)
