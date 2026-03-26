@@ -7,19 +7,16 @@ def xor_crypt(text, password):
     return result
 
 def reveal_encrypted(image_path, password):
-    # 读取图片
     img = Image.open(image_path).convert('RGB')
     pixels = np.array(img)
     height, width, _ = pixels.shape
     
-    # 提取所有最低有效位
     bits = ''
     for i in range(height):
         for j in range(width):
             for k in range(3):
                 bits += str(pixels[i][j][k] & 1)
-    
-    # 找到结束标志
+
     chars = []
     for i in range(0, len(bits), 8):
         byte = bits[i:i+8]
@@ -30,10 +27,8 @@ def reveal_encrypted(image_path, password):
     
     encrypted_text = ''.join(chars)
     
-    # 解密
     decrypted = xor_crypt(encrypted_text, password)
     return decrypted
 
-# 使用示例
 result = reveal_encrypted("secret_photo.png", "hello123")
 print(f"Secret Message: {result}")
