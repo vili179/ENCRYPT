@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ENCRYPT — Extract a Secret</title>
+<title>ENCRYPT — Hide a Secret</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -45,21 +45,18 @@ input[type="file"]{display:none;}
 .finput{width:100%;padding:11px 13px;background:var(--bg1);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
 .finput:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(14,165,233,0.1);}
 [data-theme="light"] .finput:focus{box-shadow:0 0 0 3px rgba(3,105,161,0.1);}
+textarea.finput{resize:vertical;min-height:84px;line-height:1.6;}
 .pwd-wrap{position:relative;}
 .pwd-wrap .finput{padding-right:42px;}
 .eye{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--faint);font-size:15px;padding:3px;line-height:1;}
+.strength{display:flex;gap:3px;margin-top:6px;}
+.seg{height:3px;flex:1;border-radius:2px;background:var(--border);transition:background .25s;}
 .cta{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent2),#0284c7);border:none;border-radius:10px;color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:opacity .2s,transform .1s;margin-top:4px;}
 .cta:hover{opacity:.9;}
 .cta:active{transform:scale(.98);}
 .cta::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:sh 2.5s infinite;}
 @keyframes sh{to{left:100%;}}
-.result-box{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.25);border-radius:12px;padding:16px;margin-bottom:14px;}
-.result-label{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:3px;margin-bottom:8px;}
-.result-text{font-family:var(--mono);font-size:13px;line-height:1.7;word-break:break-all;white-space:pre-wrap;}
-.result-actions{display:flex;gap:8px;margin-top:10px;}
-.rbtn{padding:7px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--muted);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-.rbtn:hover{border-color:var(--border2);color:var(--accent);}
-.err-box{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--red);display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;line-height:1.6;}
+.err-box{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--red);display:flex;align-items:flex-start;gap:8px;margin-top:12px;line-height:1.6;}
 .section-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;border-left:2px solid var(--accent2);padding-left:9px;margin-bottom:12px;margin-top:6px;}
 .tips{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .tip-row{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--border);}
@@ -71,63 +68,59 @@ input[type="file"]{display:none;}
 <body>
 <div class="wrap">
   <div class="topbar">
-    <a href="/" class="logo">ENCRYPT<span class="logo-sub">Extract a Secret</span></a>
+    <a href="/" class="logo">ENCRYPT<span class="logo-sub">Hide a Secret</span></a>
     <div class="bar-right">
       <a href="/" class="back-btn">← Back</a>
       <div class="toggle" onclick="toggleTheme()"><div class="toggle-knob"></div></div>
     </div>
   </div>
   <div class="sysbar">
-    <span><em>DECODE</em> MODULE</span>
+    <span><em>ENCODE</em> MODULE</span>
     <span>LSB <em>READY</em></span>
     <span id="clock">--:--:--</span>
   </div>
-
-  {% if result %}
-  <div class="result-box">
-    <div class="result-label">✓ DECRYPTED MESSAGE</div>
-    <div class="result-text" id="resultText">{{ result }}</div>
-    <div class="result-actions">
-      <button class="rbtn" onclick="copyResult()">Copy</button>
-      <button class="rbtn" onclick="this.closest('.result-box').style.display='none'">Clear</button>
-    </div>
-  </div>
-  {% endif %}
-
-  {% if error %}
-  <div class="err-box">✕ {{ error }}</div>
-  {% endif %}
-
-  <div class="page-tag">🔓 Steganographic Decoding</div>
-  <div class="page-title">Extract a Secret</div>
-  <div class="page-desc">Upload the stego PNG and enter the shared password. The LSB data will be extracted, reconstructed, and decrypted to reveal the hidden message.</div>
+  <div class="page-tag">🔒 Steganographic Encoding</div>
+  <div class="page-title">Hide a Secret</div>
+  <div class="page-desc">Your message will be encrypted, converted to binary, and silently embedded into the image's pixel LSBs. The output PNG is visually identical to the original.</div>
   <div class="card">
     <form method="POST" enctype="multipart/form-data" onsubmit="return handleSubmit(event)">
       <div class="field">
-        <div class="field-label"><span>Stego Image</span><span class="field-aux">PNG only</span></div>
-        <div class="drop" id="exDrop" onclick="document.getElementById('exFile').click()">
+        <div class="field-label"><span>Carrier Image</span><span class="field-aux">PNG only</span></div>
+        <div class="drop" id="hideDrop" onclick="document.getElementById('hideFile').click()">
           <span class="drop-icon">🖼</span>
-          <div class="drop-text">Tap or drag to upload stego image</div>
-          <div class="drop-sub">Must be a PNG created with the Hide tool</div>
+          <div class="drop-text">Tap or drag to upload image</div>
+          <div class="drop-sub">The container for your hidden message</div>
         </div>
-        <input type="file" id="exFile" name="image" accept="image/png">
+        <input type="file" id="hideFile" name="image" accept="image/png">
       </div>
-      <div class="field" style="margin-bottom:0;">
-        <div class="field-label">Decryption Password</div>
+      <div class="field">
+        <div class="field-label"><span>Secret Message</span><span class="field-aux" id="charCount">0 chars</span></div>
+        <textarea class="finput" id="hideMsg" name="secret" placeholder="Enter your secret message…" oninput="updateCount()"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">Encryption Password</div>
         <div class="pwd-wrap">
-          <input type="password" class="finput" id="exPwd" name="password" placeholder="Enter the shared password…">
-          <button class="eye" type="button" onclick="togglePwd('exPwd',this)">👁</button>
+          <input type="password" class="finput" id="hidePwd" name="password" placeholder="Create a strong password…" oninput="updateStrength()">
+          <button class="eye" type="button" onclick="togglePwd('hidePwd',this)">👁</button>
+        </div>
+        <div class="strength">
+          <div class="seg" id="s1"></div><div class="seg" id="s2"></div>
+          <div class="seg" id="s3"></div><div class="seg" id="s4"></div>
         </div>
       </div>
-      <div style="height:18px;"></div>
-      <button type="submit" class="cta">Decrypt &amp; Reveal →</button>
+      <button type="submit" class="cta">Encrypt &amp; Download →</button>
     </form>
   </div>
+  {% if error %}
+  <div class="err-box">✕ {{ error }}</div>
+  {% endif %}
+  <br>
   <div class="section-label">Tips</div>
   <div class="tips">
-    <div class="tip-row"><span class="tip-icon">📌</span><span class="tip-text">Only PNG images produced by the Hide tool will decode correctly. JPEG compression erases LSB data.</span></div>
-    <div class="tip-row"><span class="tip-icon">🔑</span><span class="tip-text">The password must match exactly. A wrong key produces garbled output rather than an error.</span></div>
-    <div class="tip-row"><span class="tip-icon">🔒</span><span class="tip-text">Without the correct key, extracted data is indistinguishable from random noise.</span></div>
+    <div class="tip-row"><span class="tip-icon">⚡</span><span class="tip-text">Always save the output as <strong>PNG</strong>. JPEG compression destroys LSB data.</span></div>
+    <div class="tip-row"><span class="tip-icon">🔐</span><span class="tip-text">Use a strong, unique password. Without it, the payload appears as random noise.</span></div>
+    <div class="tip-row"><span class="tip-icon">📏</span><span class="tip-text">Capacity is limited by image size. Larger images can carry longer messages.</span></div>
+    <div class="tip-row"><span class="tip-icon">👁</span><span class="tip-text">The stego image is visually identical to the original with no detectable difference.</span></div>
   </div>
 </div>
 <script>
@@ -136,21 +129,20 @@ if(saved==='light')document.documentElement.setAttribute('data-theme','light');
 function toggleTheme(){const l=document.documentElement.getAttribute('data-theme')==='light';document.documentElement.setAttribute('data-theme',l?'dark':'light');localStorage.setItem('enc-theme',l?'dark':'light');}
 function tick(){document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);}
 tick();setInterval(tick,1000);
-const drop=document.getElementById('exDrop'),fileIn=document.getElementById('exFile');
+const drop=document.getElementById('hideDrop'),fileIn=document.getElementById('hideFile');
 fileIn.addEventListener('change',()=>{if(fileIn.files[0]){drop.classList.add('filled');drop.querySelector('.drop-text').textContent='✓ '+fileIn.files[0].name;drop.querySelector('.drop-sub').textContent=(fileIn.files[0].size/1024).toFixed(1)+' KB';}});
 drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over');});
 drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
 drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');const f=e.dataTransfer.files[0];if(f){const dt=new DataTransfer();dt.items.add(f);fileIn.files=dt.files;fileIn.dispatchEvent(new Event('change'));}});
+function updateCount(){document.getElementById('charCount').textContent=document.getElementById('hideMsg').value.length+' chars';}
+function updateStrength(){const v=document.getElementById('hidePwd').value;let s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/[0-9!@#$%^&*]/.test(v))s++;const c=['','#f87171','#fbbf24','#34d399','#38bdf8'];for(let i=1;i<=4;i++)document.getElementById('s'+i).style.background=i<=s?c[s]:'var(--border)';}
 function togglePwd(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈';}
 function handleSubmit(e){
-  const file=fileIn.files[0],pwd=document.getElementById('exPwd').value;
+  const file=fileIn.files[0],msg=document.getElementById('hideMsg').value.trim(),pwd=document.getElementById('hidePwd').value;
   if(!file){e.preventDefault();alert('Please upload a PNG image first.');return false;}
-  if(!pwd){e.preventDefault();alert('Please enter the decryption password.');return false;}
+  if(!msg){e.preventDefault();alert('Please enter a secret message.');return false;}
+  if(!pwd){e.preventDefault();alert('Please set a password.');return false;}
   return true;
-}
-function copyResult(){
-  const txt=document.getElementById('resultText')?.textContent||'';
-  navigator.clipboard.writeText(txt).then(()=>{const btn=event.target;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy',1500);});
 }
 </script>
 </body>
