@@ -1,89 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Steganography Tool</title>
-    <style>
-        body {
-            font-family: monospace;
-            background: linear-gradient(135deg, #1a1f2a, #0a0e1a);
-            color: #00ff88;
-            text-align: center;
-            padding: 50px;
-            margin: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ff88;
-        }
-        .cards {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 50px;
-            flex-wrap: wrap;
-        }
-        .card {
-            background: #1e2436;
-            padding: 40px;
-            border-radius: 15px;
-            border: 2px solid #00ff88;
-            width: 250px;
-            text-decoration: none;
-            color: #00ff88;
-            transition: transform 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-        }
-        .card h2 {
-            margin: 0 0 10px 0;
-            font-size: 1.8em;
-        }
-        .card p {
-            margin: 0;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-        .emoji {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-        footer {
-            margin-top: 60px;
-            font-size: 0.8em;
-            opacity: 0.6;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ENCRYPT — Steganography Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg0:#07090f;--bg1:#0c1018;--bg2:#111827;--bg3:#1a2235;--border:rgba(56,189,248,0.12);--border2:rgba(56,189,248,0.25);--accent:#38bdf8;--accent2:#0ea5e9;--text:#e2eef7;--muted:#6b8fa8;--faint:#2a3d52;--green:#34d399;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+[data-theme="light"]{--bg0:#f0f4f8;--bg1:#e8eef5;--bg2:#ffffff;--bg3:#dce7f0;--border:rgba(3,105,161,0.14);--border2:rgba(3,105,161,0.3);--accent:#0369a1;--accent2:#0284c7;--text:#0d1f30;--muted:#4a7a96;--faint:#c4d9e8;--green:#059669;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);background:var(--bg0);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+[data-theme="light"] body::before{background-image:linear-gradient(rgba(3,105,161,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(3,105,161,0.04) 1px,transparent 1px);}
+.wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 18px 64px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0 0;}
+.logo{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--accent);letter-spacing:2px;}
+.logo-sub{color:var(--muted);font-size:10px;letter-spacing:3px;display:block;margin-top:2px;}
+.bar-right{display:flex;align-items:center;gap:10px;}
+.live{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px;}
+.dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.toggle{width:50px;height:26px;border-radius:13px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0;}
+.toggle-knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--accent);transition:transform .3s cubic-bezier(.68,-.55,.27,1.55);}
+[data-theme="light"] .toggle-knob{transform:translateX(24px);}
+.sysbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;margin:16px 0 20px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.5px;}
+.sysbar em{color:var(--accent);font-style:normal;}
+#clock{color:var(--accent);}
+.hero{text-align:center;padding:8px 0 32px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(56,189,248,0.07);border:1px solid var(--border2);border-radius:20px;padding:4px 14px;font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:18px;}
+[data-theme="light"] .hero-badge{background:rgba(3,105,161,0.07);}
+.hero h1{font-size:32px;font-weight:600;line-height:1.15;letter-spacing:-.5px;margin-bottom:12px;}
+.hero h1 em{color:var(--accent);font-style:normal;}
+.hero p{font-size:13px;line-height:1.75;color:var(--muted);max-width:380px;margin:0 auto 20px;}
+.card-grid{display:grid;gap:12px;margin-bottom:26px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px;text-decoration:none;color:var(--text);display:flex;align-items:flex-start;gap:14px;transition:border-color .25s,transform .2s;}
+.card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.card-icon{width:42px;height:42px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-tag{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+.card-title{font-size:15px;font-weight:600;margin-bottom:3px;}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.card-arrow{margin-left:auto;align-self:center;color:var(--faint);font-size:18px;transition:color .2s,transform .2s;flex-shrink:0;}
+.card:hover .card-arrow{color:var(--accent);transform:translateX(3px);}
+.section-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;border-left:2px solid var(--accent2);padding-left:9px;margin-bottom:12px;}
+.steps-block{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:26px;}
+.step{display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid var(--border);}
+.step:last-child{border-bottom:none;}
+.step-n{font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(56,189,248,0.08);border:1px solid var(--border2);border-radius:5px;width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+[data-theme="light"] .step-n{background:rgba(3,105,161,0.08);}
+.step-title{font-size:12px;font-weight:600;margin-bottom:2px;}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.info-block{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:26px;}
+.info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 15px;border-bottom:1px solid var(--border);gap:12px;}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;color:var(--muted);flex-shrink:0;}
+.info-val{font-family:var(--mono);font-size:11px;color:var(--accent);text-align:right;line-height:1.5;}
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px;}
+.use-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;}
+.use-icon{font-size:15px;margin-bottom:5px;display:block;}
+.use-title{font-size:12px;font-weight:600;margin-bottom:3px;}
+.use-desc{font-size:11px;color:var(--muted);line-height:1.55;}
+.future-block{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:26px;}
+.future-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:12px;color:var(--muted);line-height:1.55;}
+.future-item::before{content:'→';color:var(--accent);font-family:var(--mono);flex-shrink:0;margin-top:1px;}
+.footer{border-top:1px solid var(--border);padding-top:20px;font-size:11px;color:var(--muted);line-height:1.9;}
+.footer-names{font-weight:600;color:var(--text);font-size:12px;}
+.footer-school{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.3px;}
+.footer-bottom{margin-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.footer-tech{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:1px;}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔐 SECRET AGENT TOOL 🔐</h1>
-        <p>Hide secrets in images • Extract hidden messages</p>
-        
-        <div class="cards">
-            <a href="/hide" class="card">
-                <div class="emoji">📸</div>
-                <h2>HIDE</h2>
-                <p>Upload image + secret + password → Get hidden image</p>
-            </a>
-            
-            <a href="/extract" class="card">
-                <div class="emoji">🔓</div>
-                <h2>EXTRACT</h2>
-                <p>Upload hidden image + password → Reveal secret</p>
-            </a>
-        </div>
-        
-        <footer>
-            🔒 LSB Steganography + XOR Encryption
-        </footer>
+<div class="wrap">
+  <div class="topbar">
+    <div><div class="logo">ENCRYPT</div><div class="logo-sub">Steganography Suite</div></div>
+    <div class="bar-right">
+      <div class="live"><div class="dot"></div>ONLINE</div>
+      <div class="toggle" onclick="toggleTheme()"><div class="toggle-knob"></div></div>
     </div>
+  </div>
+  <div class="sysbar">
+    <span><em>LSB</em> · <em>XOR-ENC</em> · <em>PNG</em></span>
+    <span>Protocol <em>ACTIVE</em></span>
+    <span id="clock">--:--:--</span>
+  </div>
+  <div class="hero">
+    <div class="hero-badge">⬡ DUAL-LAYER PRIVACY FRAMEWORK</div>
+    <h1>Hide data inside<br><em>plain images</em></h1>
+    <p>Digital communication routinely carries highly sensitive information, including personal identifiers, financial records, and confidential evidence, across channels that are subject to observation and interception. Encryption protects the content of these transmissions, yet the presence of encrypted data itself remains exposed, creating identifiable targets for monitoring systems.</p>
+    <p style="margin-top:12px;">ENCRYPT presents a dual-layer privacy protection framework that integrates encryption with image steganography. Encrypted messages are embedded into ordinary images through least significant bit modification, allowing the data to be concealed within visually unchanged media. In this design, encryption secures the message content, and steganography obscures the existence of the communication.</p>
+  </div>
+  <div class="card-grid">
+    <a href="/hide" class="card">
+      <div class="card-icon">🔒</div>
+      <div class="card-body">
+        <div class="card-tag">Encode</div>
+        <div class="card-title">Hide a Secret</div>
+        <div class="card-desc">Encrypt and embed a message into any PNG image</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+    <a href="/extract" class="card">
+      <div class="card-icon">🔓</div>
+      <div class="card-body">
+        <div class="card-tag">Decode</div>
+        <div class="card-title">Extract a Secret</div>
+        <div class="card-desc">Retrieve and decrypt a hidden message from a stego PNG</div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+  </div>
+  <div class="section-label">How It Works</div>
+  <div class="steps-block">
+    <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Input message is encrypted using a key-derived XOR cipher, producing randomized binary data.</div></div></div>
+    <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted data is converted to binary and embedded into the Least Significant Bits (LSB) of image pixels. Minimal visual distortion, imperceptible to human vision.</div></div></div>
+    <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image appears identical to the original and can be transmitted via any standard channel.</div></div></div>
+    <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction and Decryption</div><div class="step-desc">Receiver extracts LSB data, reconstructs the message, and decrypts it using the shared key.</div></div></div>
+  </div>
+  <div class="section-label">Technical Specs</div>
+  <div class="info-block">
+    <div class="info-row"><span class="info-key">Steganography method</span><span class="info-val">LSB (Least Significant Bit)</span></div>
+    <div class="info-row"><span class="info-key">Encryption</span><span class="info-val">XOR (key-derived) · AES-256 planned</span></div>
+    <div class="info-row"><span class="info-key">Input / output format</span><span class="info-val">PNG (lossless)</span></div>
+    <div class="info-row"><span class="info-key">Visual distortion</span><span class="info-val">Imperceptible</span></div>
+    <div class="info-row"><span class="info-key">Without key</span><span class="info-val">Appears as random noise</span></div>
+  </div>
+  <div class="section-label">Use Cases</div>
+  <div class="use-grid">
+    <div class="use-card"><span class="use-icon">🛡</span><div class="use-title">Personal Privacy</div><div class="use-desc">Conceal IDs and banking data within everyday images</div></div>
+    <div class="use-card"><span class="use-icon">📰</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Covert exchange for journalists and legal investigations</div></div>
+    <div class="use-card"><span class="use-icon">©</span><div class="use-title">Copyright</div><div class="use-desc">Embed encrypted ownership metadata for traceability</div></div>
+    <div class="use-card"><span class="use-icon">📡</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal encryption keys in initialization images</div></div>
+  </div>
+  <div class="section-label">Incoming Updates</div>
+  <div class="future-block">
+    <div class="future-item">Implement AES-256 encryption for production-grade security</div>
+    <div class="future-item">Improve robustness against JPEG compression artifacts</div>
+    <div class="future-item">Explore AI-based adaptive steganography techniques</div>
+    <div class="future-item">Extend to video and audio carriers</div>
+    <div class="future-item">Attempt facial recognition-gated decryption</div>
+  </div>
+  <div class="footer">
+    <div class="footer-names">Vili Dai · Emily Bae</div>
+    <div class="footer-school">BSIS + DS Program · School of Information Sciences · University of Illinois Urbana-Champaign</div>
+    <div class="footer-bottom">
+      <span class="footer-tech">LSB · XOR-ENC · PNG</span>
+      <span style="font-size:10px;color:var(--faint);">v2.1</span>
+    </div>
+  </div>
+</div>
+<script>
+const saved=localStorage.getItem('enc-theme')||'dark';
+if(saved==='light')document.documentElement.setAttribute('data-theme','light');
+function toggleTheme(){const l=document.documentElement.getAttribute('data-theme')==='light';document.documentElement.setAttribute('data-theme',l?'dark':'light');localStorage.setItem('enc-theme',l?'dark':'light');}
+function tick(){document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);}
+tick();setInterval(tick,1000);
+</script>
 </body>
 </html>
