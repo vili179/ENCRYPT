@@ -106,10 +106,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 
 <div class="section-label">How It Works</div>
 <div class="steps-block">
-  <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Input message is encrypted using a key-derived XOR cipher. Output becomes randomized binary data.</div></div></div>
-  <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted data is converted to binary and embedded into the Least Significant Bits (LSB) of image pixels. Imperceptible to human vision.</div></div></div>
-  <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image appears identical to the original and can be transmitted via standard communication channels.</div></div></div>
-  <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction and Decryption</div><div class="step-desc">Receiver extracts LSB data from image, reconstructs the encrypted message, and applies decryption using the shared key.</div></div></div>
+  <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Input message is encrypted using a key (currently XOR-based; AES recommended for production). Output becomes randomized binary data.</div></div></div>
+  <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted data is converted into binary and embedded into the Least Significant Bits (LSB) of image pixels. Minimal visual distortion (imperceptible to human vision).</div></div></div>
+  <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image appears identical to original. Can be transmitted via standard communication channels.</div></div></div>
+  <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction and Decryption</div><div class="step-desc">Receiver extracts LSB data from image, reconstructs encrypted message, and applies decryption using shared key.</div></div></div>
 </div>
 
 <div class="section-label">Technical Specs</div>
@@ -124,10 +124,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 
 <div class="section-label">Use Cases</div>
 <div class="use-grid">
-  <div class="use-card"><span class="use-icon">🛡</span><div class="use-title">Personal Privacy</div><div class="use-desc">Hide sensitive data within everyday images to prevent leakage</div></div>
-  <div class="use-card"><span class="use-icon">📰</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Covert exchange for journalists, legal investigations, and research</div></div>
+  <div class="use-card"><span class="use-icon">🛡</span><div class="use-title">Personal Privacy</div><div class="use-desc">Hide sensitive data (e.g., IDs, banking information) within everyday images to prevent leakage</div></div>
+  <div class="use-card"><span class="use-icon">📰</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Enable covert data exchange for journalists, legal investigations, and research</div></div>
   <div class="use-card"><span class="use-icon">©</span><div class="use-title">Copyright</div><div class="use-desc">Embed encrypted ownership and licensing information for traceability</div></div>
-  <div class="use-card"><span class="use-icon">📡</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal device encryption keys within initialization images</div></div>
+  <div class="use-card"><span class="use-icon">📡</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal device encryption keys within initialization images to avoid exposure</div></div>
 </div>
 
 <div class="section-label">Incoming Updates</div>
