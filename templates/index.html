@@ -5,64 +5,253 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ENCRYPT — Steganography Suite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg-primary:#060810;--bg-secondary:#0d1120;--bg-card:#111827;--border:#1e3a5f;--accent:#0ea5e9;--accent2:#06b6d4;--accent3:#22d3ee;--text-primary:#e2f4ff;--text-secondary:#7fb3cc;--text-dim:#3a6278;--danger:#ef4444;--success:#10b981;--warning:#f59e0b;--grid-color:rgba(14,165,233,0.04);--scan-color:rgba(14,165,233,0.06);}
-[data-theme="light"]{--bg-primary:#f0f4f8;--bg-secondary:#e2eaf4;--bg-card:#ffffff;--border:#b0cce0;--accent:#0369a1;--accent2:#0284c7;--accent3:#0ea5e9;--text-primary:#0c1824;--text-secondary:#2d6080;--text-dim:#8ab0c4;--danger:#dc2626;--success:#059669;--warning:#d97706;--grid-color:rgba(3,105,161,0.04);--scan-color:rgba(3,105,161,0.05);}
+:root{
+  --bg-primary:#03050B;
+  --bg-secondary:#0A0F1A;
+  --bg-card:#0E1422;
+  --border:#00ffcc22;
+  --accent:#00ffcc;
+  --accent2:#7000ff;
+  --accent3:#b000ff;
+  --text-primary:#eef5ff;
+  --text-secondary:#88aaff;
+  --text-dim:#446688;
+  --danger:#ff3366;
+  --success:#00ffaa;
+  --warning:#ffaa33;
+  --grid-color:rgba(0,255,204,0.03);
+  --scan-color:rgba(0,255,204,0.04);
+  --glow:0 0 8px rgba(0,255,204,0.3);
+}
+[data-theme="light"]{
+  --bg-primary:#eef2ff;
+  --bg-secondary:#ffffff;
+  --bg-card:#ffffff;
+  --border:#00aacc;
+  --accent:#0066cc;
+  --accent2:#2b00ff;
+  --accent3:#7b2cbf;
+  --text-primary:#0a0e27;
+  --text-secondary:#1e3a8a;
+  --text-dim:#5a7d9a;
+  --danger:#dc2626;
+  --success:#059669;
+  --warning:#d97706;
+  --grid-color:rgba(0,102,204,0.05);
+  --scan-color:rgba(0,102,204,0.03);
+  --glow:0 0 6px rgba(0,102,204,0.2);
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Rajdhani',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,var(--scan-color) 0px,var(--scan-color) 1px,transparent 1px,transparent 3px);pointer-events:none;z-index:0;}
-.wrapper{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 16px 80px;}
-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 0;margin-bottom:28px;}
-.logo-title{font-family:'Share Tech Mono',monospace;font-size:22px;color:var(--accent);letter-spacing:3px;line-height:1;}
-.logo-sub{font-size:10px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-top:2px;}
-.header-right{display:flex;align-items:center;gap:12px;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background .4s,color .4s;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,var(--scan-color) 0px,var(--scan-color) 1px,transparent 1px,transparent 3px);
+  pointer-events:none;
+  z-index:0;
+}
+.wrapper{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 20px 80px;}
+header{display:flex;align-items:center;justify-content:space-between;padding:24px 0 8px;margin-bottom:24px;}
+.logo-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:24px;
+  color:var(--accent);
+  letter-spacing:4px;
+  line-height:1;
+  text-shadow:var(--glow);
+}
+.logo-sub{font-size:10px;letter-spacing:5px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
+.header-right{display:flex;align-items:center;gap:16px;}
 .status-dot{display:flex;align-items:center;gap:6px;font-size:10px;font-family:'Share Tech Mono',monospace;color:var(--success);letter-spacing:1px;}
-.dot{width:6px;height:6px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.theme-toggle{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;width:52px;height:28px;cursor:pointer;position:relative;transition:border-color .3s;flex-shrink:0;}
-.theme-toggle:hover{border-color:var(--accent);}
-.theme-toggle::before{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--accent);transition:transform .3s cubic-bezier(.68,-.55,.27,1.55);}
-[data-theme="light"] .theme-toggle::before{transform:translateX(24px);}
-.theme-icon{position:absolute;top:50%;transform:translateY(-50%);font-size:10px;pointer-events:none;}
-.icon-moon{left:6px;}.icon-sun{right:6px;}
-.sys-bar{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;}
-.sys-bar em{color:var(--accent3);font-style:normal;}
-.nav-tabs{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;background:var(--bg-secondary);}
-.nav-tab{flex:1;padding:14px 10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:all .3s;border:none;background:transparent;position:relative;font-family:'Rajdhani',sans-serif;text-decoration:none;display:flex;align-items:center;justify-content:center;}
-.nav-tab.active{background:var(--bg-card);color:var(--accent);}
-.nav-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--accent3));}
-.nav-tab:not(.active):hover{color:var(--text-secondary);}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;}
-.card-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
-.card-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.card-title{font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-primary);}
-.card-desc{font-size:12px;color:var(--text-dim);letter-spacing:1px;}
-.about-text{font-size:13px;line-height:1.8;color:var(--text-secondary);margin-bottom:16px;}
-.section-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;border-left:2px solid var(--accent2);padding-left:9px;margin-bottom:12px;}
-.steps-block{background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
-.step{display:flex;gap:12px;padding:13px 15px;border-bottom:1px solid var(--border);}
+.dot{width:8px;height:8px;background:var(--success);border-radius:50%;animation:pulse 1.8s infinite;box-shadow:0 0 4px var(--success);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.theme-toggle{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:30px;
+  width:56px;
+  height:30px;
+  cursor:pointer;
+  position:relative;
+  transition:all .3s;
+  flex-shrink:0;
+}
+.theme-toggle:hover{border-color:var(--accent);box-shadow:var(--glow);}
+.theme-toggle::before{
+  content:'';
+  position:absolute;
+  top:3px;
+  left:4px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  transition:transform .3s cubic-bezier(.68,-.55,.27,1.55);
+}
+[data-theme="light"] .theme-toggle::before{transform:translateX(26px);}
+.theme-icon{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;pointer-events:none;}
+.icon-moon{left:8px;color:#fff;}.icon-sun{right:8px;color:#ffd966;}
+.sys-bar{
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--text-dim);
+  letter-spacing:1px;
+  backdrop-filter:blur(2px);
+}
+.sys-bar em{color:var(--accent3);font-style:normal;text-shadow:0 0 3px var(--accent3);}
+.nav-tabs{
+  display:flex;
+  border:1px solid var(--border);
+  border-radius:60px;
+  overflow:hidden;
+  margin-bottom:28px;
+  background:var(--bg-secondary);
+  backdrop-filter:blur(4px);
+}
+.nav-tab{
+  flex:1;
+  padding:14px 8px;
+  text-align:center;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  transition:all .3s;
+  border:none;
+  background:transparent;
+  position:relative;
+  font-family:'Inter',sans-serif;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.nav-tab.active{
+  background:var(--bg-card);
+  color:var(--accent);
+  text-shadow:0 0 5px var(--accent);
+}
+.nav-tab:not(.active):hover{color:var(--text-secondary);background:rgba(0,255,204,0.05);}
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:20px;
+  backdrop-filter:blur(8px);
+  box-shadow:0 10px 25px -5px rgba(0,0,0,0.2);
+}
+.card-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.card-icon{
+  width:48px;
+  height:48px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  flex-shrink:0;
+  box-shadow:var(--glow);
+}
+.card-title{font-size:18px;font-weight:800;letter-spacing:1.5px;color:var(--text-primary);}
+.card-desc{font-size:12px;color:var(--text-dim);letter-spacing:0.5px;margin-top:4px;}
+.about-text{font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:16px;}
+.section-label{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:var(--text-dim);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  border-left:3px solid var(--accent2);
+  padding-left:12px;
+  margin-bottom:14px;
+  margin-top:8px;
+}
+.steps-block{
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.step{
+  display:flex;
+  gap:14px;
+  padding:15px 18px;
+  border-bottom:1px solid var(--border);
+}
 .step:last-child{border-bottom:none;}
-.step-n{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);background:rgba(14,165,233,0.08);border:1px solid var(--border);border-radius:5px;width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-[data-theme="light"] .step-n{background:rgba(3,105,161,0.08);}
-.step-title{font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:2px;color:var(--text-primary);}
+.step-n{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  background:rgba(0,255,204,0.1);
+  border:1px solid var(--border);
+  border-radius:30px;
+  width:32px;
+  height:32px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.step-title{font-size:13px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;color:var(--text-primary);}
 .step-desc{font-size:12px;color:var(--text-secondary);line-height:1.6;}
-.info-panel{background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
-.info-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);}
+.info-panel{
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:16px 20px;
+  margin-bottom:20px;
+}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
 .info-row:last-child{border-bottom:none;}
-.info-key{font-size:11px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;}
-.info-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent3);}
-.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.use-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;padding:13px;}
-.use-icon{font-size:15px;margin-bottom:5px;display:block;}
-.use-title{font-size:12px;font-weight:700;margin-bottom:3px;color:var(--text-primary);}
+.info-key{font-size:11px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;font-weight:600;}
+.info-val{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent3);}
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.use-card{
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  transition:all .2s;
+}
+.use-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.use-icon{font-size:20px;margin-bottom:8px;display:block;}
+.use-title{font-size:13px;font-weight:700;margin-bottom:5px;color:var(--text-primary);}
 .use-desc{font-size:11px;color:var(--text-dim);line-height:1.55;}
-.future-block{background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
-.future-item{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:12px;color:var(--text-secondary);line-height:1.55;}
-.future-item::before{content:'→';color:var(--accent);font-family:'Share Tech Mono',monospace;flex-shrink:0;margin-top:1px;}
-.footer{text-align:center;padding-top:24px;font-size:10px;font-family:'Share Tech Mono',monospace;color:var(--text-dim);letter-spacing:2px;line-height:2;}
-.footer-names{font-weight:700;color:var(--text-primary);font-size:11px;}
+.footer{text-align:center;padding-top:28px;font-size:10px;font-family:'Share Tech Mono',monospace;color:var(--text-dim);letter-spacing:2px;line-height:2;}
+.footer-names{font-weight:800;color:var(--text-primary);font-size:12px;}
 .footer-school{color:var(--accent3);font-size:10px;}
 </style>
 </head>
@@ -74,7 +263,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
     <div class="logo-sub">Steganography Suite</div>
   </div>
   <div class="header-right">
-    <div class="status-dot"><div class="dot"></div>ONLINE</div>
+    <div class="status-dot"><div class="dot"></div>SECURE LINK</div>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
       <span class="theme-icon icon-moon">🌙</span>
       <span class="theme-icon icon-sun">☀️</span>
@@ -82,7 +271,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
   </div>
 </header>
 <div class="sys-bar">
-  <span><em>LSB</em> · <em>XOR-ENC</em> · <em>PNG</em></span>
+  <span><em>LSB</em> · <em>XOR-ENC</em> · <em>PNG/JPEG/HEIC</em></span>
   <span>Protocol <em>ACTIVE</em></span>
   <span id="clock">--:--:--</span>
 </div>
@@ -94,55 +283,46 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 
 <div class="card">
   <div class="card-header">
-    <div class="card-icon">🛡</div>
+    <div class="card-icon">🛡️</div>
     <div>
       <div class="card-title">About ENCRYPT</div>
       <div class="card-desc">Dual-layer privacy framework</div>
     </div>
   </div>
-  <p class="about-text">Digital communication routinely carries highly sensitive information, including personal identifiers, financial records, and confidential evidence, across channels that are subject to observation and interception. Encryption protects the content of these transmissions, yet the presence of encrypted data itself remains exposed, creating identifiable targets for monitoring systems.</p>
-  <p class="about-text">ENCRYPT presents a dual-layer privacy protection framework that integrates encryption with image steganography. Encrypted messages are embedded into ordinary images through least significant bit modification, allowing the data to be concealed within visually unchanged media. In this design, encryption secures the message content, and steganography obscures the existence of the communication.</p>
+  <p class="about-text">Digital communication routinely carries highly sensitive information across channels subject to observation. Encryption protects content, yet the presence of encrypted data itself remains exposed.</p>
+  <p class="about-text">ENCRYPT integrates encryption with image steganography using LSB embedding. Encrypted messages are concealed within ordinary images — encryption secures the content, steganography hides its existence. <strong>Now supports PNG, JPEG, JPG, HEIC, HEIF.</strong></p>
 </div>
 
-<div class="section-label">How It Works</div>
+<div class="section-label">⚙️ How It Works</div>
 <div class="steps-block">
-  <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Input message is encrypted using a key (currently XOR-based; AES recommended for production). Output becomes randomized binary data.</div></div></div>
-  <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted data is converted into binary and embedded into the Least Significant Bits (LSB) of image pixels. Minimal visual distortion (imperceptible to human vision).</div></div></div>
-  <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image appears identical to original. Can be transmitted via standard communication channels.</div></div></div>
-  <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction and Decryption</div><div class="step-desc">Receiver extracts LSB data from image, reconstructs encrypted message, and applies decryption using shared key.</div></div></div>
+  <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Message is XOR-encrypted with your password → randomized binary data.</div></div></div>
+  <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted bits replace Least Significant Bits of image pixels. Visually imperceptible.</div></div></div>
+  <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image looks identical to original. Can be shared freely.</div></div></div>
+  <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction & Decryption</div><div class="step-desc">Receiver extracts LSB data, reconstructs encrypted message, decrypts with correct key.</div></div></div>
 </div>
 
-<div class="section-label">Technical Specs</div>
+<div class="section-label">📊 Technical Specs</div>
 <div class="info-panel">
-  <div class="info-row"><span class="info-key">Steganography method</span><span class="info-val">LSB</span></div>
-  <div class="info-row"><span class="info-key">Encryption</span><span class="info-val">XOR (key-derived)</span></div>
-  <div class="info-row"><span class="info-key">Input / output format</span><span class="info-val">PNG (lossless)</span></div>
+  <div class="info-row"><span class="info-key">Steganography</span><span class="info-val">LSB (Least Significant Bit)</span></div>
+  <div class="info-row"><span class="info-key">Encryption</span><span class="info-val">XOR with key derivation</span></div>
+  <div class="info-row"><span class="info-key">Supported formats</span><span class="info-val">PNG · JPEG · JPG · HEIC · HEIF</span></div>
   <div class="info-row"><span class="info-key">Visual quality</span><span class="info-val">No perceptible difference</span></div>
-  <div class="info-row"><span class="info-key">Without key</span><span class="info-val">Appears as random noise</span></div>
-  <div class="info-row"><span class="info-key">Capacity</span><span class="info-val">Limited by image size</span></div>
+  <div class="info-row"><span class="info-key">Wrong password</span><span class="info-val">Explicit error message</span></div>
+  <div class="info-row"><span class="info-key">Capacity</span><span class="info-val">~1 bit per pixel channel</span></div>
 </div>
 
-<div class="section-label">Use Cases</div>
+<div class="section-label">🎯 Use Cases</div>
 <div class="use-grid">
-  <div class="use-card"><span class="use-icon">🛡</span><div class="use-title">Personal Privacy</div><div class="use-desc">Hide sensitive data (e.g., IDs, banking information) within everyday images to prevent leakage</div></div>
-  <div class="use-card"><span class="use-icon">📰</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Enable covert data exchange for journalists, legal investigations, and research</div></div>
-  <div class="use-card"><span class="use-icon">©</span><div class="use-title">Copyright</div><div class="use-desc">Embed encrypted ownership and licensing information for traceability</div></div>
-  <div class="use-card"><span class="use-icon">📡</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal device encryption keys within initialization images to avoid exposure</div></div>
-</div>
-
-<div class="section-label">Incoming Updates</div>
-<div class="future-block">
-  <div class="future-item">Implement AES encryption</div>
-  <div class="future-item">Improve robustness against compression</div>
-  <div class="future-item">Explore AI-based adaptive steganography</div>
-  <div class="future-item">Extend to video and audio carriers</div>
-  <div class="future-item">Attempt facial recognition decryption</div>
+  <div class="use-card"><span class="use-icon">🛡️</span><div class="use-title">Personal Privacy</div><div class="use-desc">Hide sensitive data (IDs, banking) inside everyday images</div></div>
+  <div class="use-card"><span class="use-icon">📰</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Covert data exchange for journalists & investigators</div></div>
+  <div class="use-card"><span class="use-icon">©️</span><div class="use-title">Copyright Marking</div><div class="use-desc">Embed ownership info invisibly into assets</div></div>
+  <div class="use-card"><span class="use-icon">📡</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal device encryption keys within images</div></div>
 </div>
 
 <div class="footer">
   <div class="footer-names">Vili Dai · Emily Bae</div>
-  <div class="footer-school">BSIS + DS Program · School of Information Sciences · University of Illinois Urbana-Champaign</div>
-  <div style="margin-top:8px;">LSB · XOR-ENC · PNG · v2.1</div>
+  <div class="footer-school">BSIS + DS Program · School of Information Sciences · UIUC</div>
+  <div style="margin-top:8px;">LSB · XOR-ENC · PNG/JPEG/HEIC · v2.2</div>
 </div>
 </div>
 <script>
