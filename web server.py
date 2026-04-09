@@ -54,7 +54,7 @@ def reveal_encrypted(image_data, password):
     Step 4: Detect if password was wrong
     """
 
-    # STEP 1: Open image and get pixel data
+    # Extract
     img = Image.open(image_data).convert('RGB')
     pixels = np.array(img)
     height, width, _ = pixels.shape
@@ -81,7 +81,7 @@ def reveal_encrypted(image_data, password):
     # Decrypt
     decrypted = xor_crypt(encrypted_text, password)
 
-    # Validate password (detect gibberish)
+    # Validate Password
     if len(decrypted) == 0:
         raise Exception("No hidden message found. The image may not contain a steganographic payload.")
     
@@ -96,8 +96,7 @@ def reveal_encrypted(image_data, password):
     return decrypted
 
 
-# ========== WEB PAGES ==========
-
+# Web Page
 @app.route('/')
 def index():
     return render_template('index.html')
