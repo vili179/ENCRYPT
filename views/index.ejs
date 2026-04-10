@@ -1,0 +1,52 @@
+<%- include("partials/head") %>
+<div class="sys-bar">
+  <span><em>LSB</em> &middot; <em>XOR-ENC</em> &middot; <em>PNG/JPEG/HEIC</em></span>
+  <span>Protocol <em>ACTIVE</em></span>
+  <span id="clock">--:--:--</span>
+</div>
+<%- include("partials/nav", { activeTab }) %>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">&#128737;&#65039;</div>
+    <div>
+      <div class="card-title">About ENCRYPT</div>
+      <div class="card-desc">Dual-layer privacy framework</div>
+    </div>
+  </div>
+  <p class="about-text">Digital communication routinely carries highly sensitive information across channels subject to observation. Encryption protects content, yet the presence of encrypted data itself remains exposed.</p>
+  <p class="about-text">ENCRYPT integrates encryption with image steganography using LSB embedding. Encrypted messages are concealed within ordinary images, encryption secures the content, steganography hides its existence. <strong>Now supports PNG, JPEG, JPG, HEIC, HEIF.</strong></p>
+</div>
+
+<div class="section-label">&#9881;&#65039; How It Works</div>
+<div class="steps-block">
+  <div class="step"><div class="step-n">01</div><div><div class="step-title">Encryption</div><div class="step-desc">Message is XOR-encrypted with your password, producing randomized binary data.</div></div></div>
+  <div class="step"><div class="step-n">02</div><div><div class="step-title">Steganographic Embedding</div><div class="step-desc">Encrypted bits replace Least Significant Bits of image pixels. Visually imperceptible.</div></div></div>
+  <div class="step"><div class="step-n">03</div><div><div class="step-title">Transmission</div><div class="step-desc">Output image looks identical to original. Can be shared freely.</div></div></div>
+  <div class="step"><div class="step-n">04</div><div><div class="step-title">Extraction &amp; Decryption</div><div class="step-desc">Receiver extracts LSB data, reconstructs encrypted message, decrypts with correct key.</div></div></div>
+</div>
+
+<div class="section-label">&#128202; Technical Specs</div>
+<div class="info-panel">
+  <div class="info-row"><span class="info-key">Steganography</span><span class="info-val">LSB (Least Significant Bit)</span></div>
+  <div class="info-row"><span class="info-key">Encryption</span><span class="info-val">XOR with key derivation</span></div>
+  <div class="info-row"><span class="info-key">Supported formats</span><span class="info-val">PNG &middot; JPEG &middot; JPG &middot; HEIC &middot; HEIF</span></div>
+  <div class="info-row"><span class="info-key">Visual quality</span><span class="info-val">No perceptible difference</span></div>
+  <div class="info-row"><span class="info-key">Wrong password</span><span class="info-val">Explicit error message</span></div>
+  <div class="info-row"><span class="info-key">Capacity</span><span class="info-val">~1 bit per pixel channel</span></div>
+</div>
+
+<div class="section-label">&#127919; Use Cases</div>
+<div class="use-grid">
+  <div class="use-card"><span class="use-icon">&#128737;&#65039;</span><div class="use-title">Personal Privacy</div><div class="use-desc">Hide sensitive data (IDs, banking) inside everyday images</div></div>
+  <div class="use-card"><span class="use-icon">&#128240;</span><div class="use-title">High-Risk Comms</div><div class="use-desc">Covert data exchange for journalists &amp; investigators</div></div>
+  <div class="use-card"><span class="use-icon">&copy;&#65039;</span><div class="use-title">Copyright Marking</div><div class="use-desc">Embed ownership info invisibly into assets</div></div>
+  <div class="use-card"><span class="use-icon">&#128225;</span><div class="use-title">IoT Key Dist.</div><div class="use-desc">Conceal device encryption keys within images</div></div>
+</div>
+
+<div class="footer">
+  <div class="footer-names">Vili Dai &middot; Emily Bae</div>
+  <div class="footer-school">BSIS + DS Program &middot; School of Information Sciences &middot; UIUC</div>
+  <div style="margin-top:8px;">LSB &middot; XOR-ENC &middot; PNG/JPEG/HEIC &middot; v3.0</div>
+</div>
+<%- include("partials/foot", { pageScript: null }) %>

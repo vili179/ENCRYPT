@@ -1,0 +1,66 @@
+<%- include("partials/head") %>
+<div class="sys-bar">
+  <span><em>EXTRACT</em> MODULE &#128275;</span>
+  <span>LSB <em>ACTIVE</em></span>
+  <span id="clock">--:--:--</span>
+</div>
+<%- include("partials/nav", { activeTab }) %>
+
+<% if (result) { %>
+<div class="result-box">
+  <div class="result-label">&#10003; SECRET REVEALED</div>
+  <div class="result-text" id="resultText"><%= result %></div>
+  <div class="result-actions">
+    <button class="result-btn" id="copyBtn">&#128203; Copy</button>
+    <button class="result-btn" id="clearBtn">&#128465;&#65039; Clear</button>
+  </div>
+</div>
+<% } %>
+
+<% if (error) { %>
+<div class="err-box">
+  <span>&#9888;&#65039;</span>
+  <span><%= error %></span>
+</div>
+<% } %>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">&#128275;</div>
+    <div>
+      <div class="card-title">Extract a Secret <span class="badge">DECODE</span></div>
+      <div class="card-desc">Retrieve hidden message from stego image (PNG, JPEG, HEIC)</div>
+    </div>
+  </div>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="field">
+      <div class="field-label">&#128248; Stego Image</div>
+      <div class="file-drop" id="exDrop">
+        <img class="drop-preview" alt="">
+        <span class="drop-icon">&#128444;&#65039;</span>
+        <div class="drop-text">Tap or drag image here</div>
+        <div class="drop-sub">PNG &middot; JPEG &middot; JPG &middot; HEIC &middot; HEIF</div>
+      </div>
+      <input type="file" id="exFile" name="image" accept="image/png,image/jpeg,image/jpg,image/heic,image/heif">
+    </div>
+    <div class="field" style="margin-bottom:4px;">
+      <div class="field-label">&#128273; Decryption Password</div>
+      <div class="password-wrap">
+        <input type="password" class="field-input" id="exPwd" name="password" placeholder="Enter the shared password...">
+        <button class="eye-btn" data-toggle-pwd="exPwd" type="button">&#128065;</button>
+      </div>
+    </div>
+    <div style="height:14px;"></div>
+    <button type="submit" class="cta-btn">&#128275; Decrypt &amp; Reveal</button>
+  </form>
+  <div class="loading" id="extractLoading"><div class="spinner"></div> DECRYPTING PAYLOAD &hellip;</div>
+</div>
+
+<div class="section-label">&#128161; Extraction Tips</div>
+<div class="tips">
+  <div class="tip-row"><span class="tip-icon">&#128204;</span><span class="tip-text">Supports PNG, JPEG, HEIC/HEIF, but original stego image must be lossless (PNG best).</span></div>
+  <div class="tip-row"><span class="tip-icon">&#128273;</span><span class="tip-text">Password must match exactly. Wrong key produces an "incorrect password" error.</span></div>
+  <div class="tip-row"><span class="tip-icon">&#128737;&#65039;</span><span class="tip-text">Without correct key, extracted data appears as random noise. System validates decryption.</span></div>
+  <div class="tip-row"><span class="tip-icon">&#9889;</span><span class="tip-text">If you see "incorrect password", double-check caps &amp; spelling.</span></div>
+</div>
+<%- include("partials/foot", { pageScript: "extract" }) %>

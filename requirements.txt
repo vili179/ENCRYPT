@@ -1,6 +1,0 @@
-flask==3.1.3
-pillow==12.1.0
-numpy==2.4.1
-gunicorn
-werkzeug==3.1.7
-pillow-heif

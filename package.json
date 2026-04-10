@@ -1,0 +1,33 @@
+{
+  "name": "encrypt-steganography",
+  "version": "3.0.0",
+  "type": "module",
+  "description": "Dual-layer steganography and encryption suite",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && node build.mjs",
+    "build:client": "node build.mjs",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

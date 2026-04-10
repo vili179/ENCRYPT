@@ -1,0 +1,62 @@
+<%- include("partials/head") %>
+<div class="sys-bar">
+  <span><em>ENCODE</em> MODULE &#128274;</span>
+  <span>LSB <em>READY</em></span>
+  <span id="clock">--:--:--</span>
+</div>
+<%- include("partials/nav", { activeTab }) %>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">&#128274;</div>
+    <div>
+      <div class="card-title">Hide a Secret <span class="badge">ENCODE</span></div>
+      <div class="card-desc">Encrypt and embed a message into any image (PNG, JPEG, HEIC)</div>
+    </div>
+  </div>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="field">
+      <div class="field-label">&#128247; Carrier Image</div>
+      <div class="file-drop" id="hideDrop">
+        <img class="drop-preview" alt="">
+        <span class="drop-icon">&#128444;&#65039;</span>
+        <div class="drop-text">Tap or drag image</div>
+        <div class="drop-sub">PNG &middot; JPEG &middot; JPG &middot; HEIC &middot; HEIF</div>
+      </div>
+      <input type="file" id="hideFile" name="image" accept="image/png,image/jpeg,image/jpg,image/heic,image/heif">
+    </div>
+    <div class="field">
+      <div class="field-label">&#128221; Secret Message</div>
+      <textarea class="field-input" id="hideSecret" name="secret" placeholder="Enter your secret message..."></textarea>
+      <div class="char-count-row"><span class="char-count" id="charCount">0 chars</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">&#128272; Encryption Password</div>
+      <div class="password-wrap">
+        <input type="password" class="field-input" id="hidePassword" name="password" placeholder="Create a strong password...">
+        <button class="eye-btn" data-toggle-pwd="hidePassword" type="button">&#128065;</button>
+      </div>
+      <div class="strength-bar">
+        <div class="strength-seg" id="s1"></div>
+        <div class="strength-seg" id="s2"></div>
+        <div class="strength-seg" id="s3"></div>
+        <div class="strength-seg" id="s4"></div>
+      </div>
+    </div>
+    <button type="submit" class="cta-btn">&#128274; Encrypt &amp; Download</button>
+  </form>
+  <div class="loading" id="hideLoading"><div class="spinner"></div> ENCRYPTING PAYLOAD &hellip;</div>
+</div>
+
+<% if (error) { %>
+<div class="err-box">&#9888;&#65039; <%= error %></div>
+<% } %>
+
+<div class="section-label">&#128161; Hiding Tips</div>
+<div class="tips">
+  <div class="tip-row"><span class="tip-icon">&#9889;</span><span class="tip-text">Always save the output as PNG. JPEG compression can destroy LSB data.</span></div>
+  <div class="tip-row"><span class="tip-icon">&#128272;</span><span class="tip-text">Use a strong, unique password. Without it, the payload appears as random noise.</span></div>
+  <div class="tip-row"><span class="tip-icon">&#128207;</span><span class="tip-text">Capacity is limited by image size. Larger images can carry longer messages.</span></div>
+  <div class="tip-row"><span class="tip-icon">&#128065;</span><span class="tip-text">The stego image is visually identical to the original, no detectable difference.</span></div>
+</div>
+<%- include("partials/foot", { pageScript: "hide" }) %>

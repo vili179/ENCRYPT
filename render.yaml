@@ -1,9 +1,9 @@
 services:
   - type: web
     name: encrypt-app
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn -w 4 -b 0.0.0.0:$PORT "web server:app"
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index.js
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
+      - key: NODE_VERSION
+        value: 20
