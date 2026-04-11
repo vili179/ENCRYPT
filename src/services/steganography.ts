@@ -8,7 +8,7 @@ export async function hideMessage(
   secretText: string,
   password: string
 ): Promise<StegoResult> {
-  const encrypted = xorCrypt(secretText, password);
+  const encrypted = xorCrypt("ENC:" + secretText, password);
   const messageBits = textToBits(encrypted);
 
   const secretBits = new Uint8Array(messageBits.length + 8);
@@ -78,19 +78,11 @@ export async function revealMessage(
     );
   }
 
-  let printableCount = 0;
-  for (let i = 0; i < decrypted.length; i++) {
-    const code = decrypted.charCodeAt(i);
-    if ((code >= 32 && code <= 126) || code === 10 || code === 13 || code === 9) {
-      printableCount++;
-    }
-  }
-
-  if (printableCount / decrypted.length < 0.7) {
+  if (!decrypted.startsWith("ENC:")) {
     throw new Error(
       "Incorrect password. Please try again with the correct decryption key."
     );
   }
 
-  return decrypted;
+  return decrypted.slice(4);
 }
